@@ -64,20 +64,21 @@ async def cmd_language(message: types.Message):
             reply_markup=await language_markup(message)
         )
     else:
-        await message.reply(
-            await get_world(
-                lang=(
-                    await db.select_fetchone(
-                        table_name="chats",
-                        colum="language",
-                        param="chat_id",
-                        value=f"'{message.chat.id}'"
-                    )
-                )[0],
-                text="change"
-            ),
-            reply_markup=await language_markup(message)
-        )
+        if (await bot.get_chat_member(message.chat.id, message.from_user.id)).is_chat_admin():
+            await message.reply(
+                await get_world(
+                    lang=(
+                        await db.select_fetchone(
+                            table_name="chats",
+                            colum="language",
+                            param="chat_id",
+                            value=f"'{message.chat.id}'"
+                        )
+                    )[0],
+                    text="change"
+                ),
+                reply_markup=await language_markup(message)
+            )
 
 
 @dp.message_handler(content_types=["new_chat_members"])
