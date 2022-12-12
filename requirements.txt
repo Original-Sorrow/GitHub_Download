@@ -1,0 +1,4 @@
+aiogram
+psycopg2-binary
+aiohttp
+asyncio
